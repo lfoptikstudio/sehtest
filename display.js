@@ -216,23 +216,19 @@
     function refMm(v) { return O.sizeMm(dM, v); }
     function mUnit(v) { return dM / v; }
     function fontPx(v) { return refMm(v) / ratio * pxPerMm; }
-    function tag(v) {
-      return 'Visus ' + O.fmtVisus(v) + ' · ' + O.fmtNum(mUnit(v), 2) + ' M<br>' + refName + ' ' + O.fmtNum(refMm(v), 2) + ' mm';
-    }
     var html = '';
     if (state.near.view === 'single') {
       var v = state.near.visus;
       var txt = NEAR_TEXTS[NEAR_STEPS.indexOf(v) % NEAR_TEXTS.length] + ' ' + NEAR_TEXTS[(NEAR_STEPS.indexOf(v) + 5) % NEAR_TEXTS.length];
       html = '<div class="single"><p style="font-size:' + fontPx(v).toFixed(2) + 'px">' + txt + '</p>' +
-        '<div class="tag">' + tag(v) + ' · ' + state.near.distanceCm + ' cm</div></div>';
+        '<div class="tag">Visus ' + O.fmtVisus(v) + ' · ' + O.fmtNum(mUnit(v), 2) + ' M · ' + state.near.distanceCm + ' cm</div></div>';
     } else {
-      // Lesetafel: groß nach klein
+      // Lesetafel: groß nach klein, links nur die Visusstufe
       NEAR_STEPS.forEach(function (v, i) {
-        html += '<div class="para"><div class="tag">' + tag(v) + '</div>' +
+        html += '<div class="para"><div class="tag" title="' + O.fmtNum(mUnit(v), 2) + ' M · ' + refName + ' ' + O.fmtNum(refMm(v), 2) + ' mm">' + O.fmtVisus(v) + '</div>' +
           '<p style="font-size:' + fontPx(v).toFixed(2) + 'px">' + NEAR_TEXTS[i % NEAR_TEXTS.length] + '</p></div>';
       });
-      html += '<div class="tag" style="color:#999;font-size:11px;margin-top:20px">Nahsehprobe für ' + state.near.distanceCm + ' cm. Visus bezogen auf die ' + refName +
-        ' = 5 Winkelminuten' + (useX ? ' (Sloan-M-System, wie MNREAD / Radner)' : '') + '. Schriftgrößen skaliert per Bildschirmkalibrierung.</div>';
+      html += '<div class="tag" style="color:#999;font-size:11px;margin-top:20px">Nahsehprobe für ' + state.near.distanceCm + ' cm, Visus bezogen auf die ' + refName + '.</div>';
     }
     els.near.innerHTML = html;
   }

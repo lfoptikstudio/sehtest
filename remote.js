@@ -69,4 +69,5 @@
     // Erstes Antippen: Bildschirm wach halten
     document.addEventListener('touchend', requestWakeLock, { once: true });
   });
+  global.SehtestRemote = { link: function () { return link; }, state: function () { return state; } };
 })(window);

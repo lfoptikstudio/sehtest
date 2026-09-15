@@ -66,12 +66,16 @@
     function start() {
       if (closed) return;
       if (!hasPeer()) { setStatus('error', 'PeerJS nicht geladen'); return; }
-      try { peer && peer.destroy(); } catch (e) { /* ignore */ }
-      recon.reset();
+      var oldPeer = peer;
+      peer = null; recon.reset();
+      try { oldPeer && oldPeer.destroy(); } catch (e) { /* ignore */ }
       setStatus('connecting');
-      peer = new global.Peer(peerId(code), PEER_OPTIONS);
-      peer.on('open', function () { recon.reset(); setStatus(idleStatus()); });
-      peer.on('connection', function (conn) {
+      var thisPeer = new global.Peer(peerId(code), PEER_OPTIONS);
+      peer = thisPeer;
+      function current() { return peer === thisPeer; }
+      thisPeer.on('open', function () { if (!current()) return; recon.reset(); setStatus(idleStatus()); });
+      thisPeer.on('connection', function (conn) {
+        if (!current()) { try { conn.close(); } catch (e) { /* ignore */ } return; }
         conn.on('open', function () {
           conns.push(conn);
           conn._lastSeen = Date.now();
@@ -92,13 +96,14 @@
         conn.on('close', drop);
         conn.on('error', drop);
       });
-      peer.on('disconnected', function () {
+      thisPeer.on('disconnected', function () {
         // Nur Server-Verbindung weg – bestehende Handy-Verbindungen bleiben erhalten
-        if (closed) return;
+        if (closed || !current()) return;
         setStatus(conns.length ? 'connected' : 'connecting', 'Vermittlungsserver getrennt – verbinde neu');
         recon.schedule();
       });
-      peer.on('error', function (err) {
+      thisPeer.on('error', function (err) {
+        if (!current()) return;
         var type = err && err.type;
         if (type === 'unavailable-id') {
           setStatus('error', 'Code bereits belegt – bitte neuen Code erzeugen');
@@ -154,35 +159,45 @@
     function connect() {
       if (closed) return;
       if (!hasPeer()) { setStatus('error', 'PeerJS nicht geladen'); return; }
-      try { peer && peer.destroy(); } catch (e) { /* ignore */ }
-      conn = null; recon.reset();
+      // Erst aus dem Zustand nehmen, dann zerstören – die Schließ-Ereignisse der alten Verbindung laufen so ins Leere
+      var oldPeer = peer;
+      peer = null; conn = null; recon.reset();
+      try { oldPeer && oldPeer.destroy(); } catch (e) { /* ignore */ }
       setStatus('connecting');
-      peer = new global.Peer(PEER_OPTIONS);
-      peer.on('open', function () {
+      var thisPeer = new global.Peer(PEER_OPTIONS);
+      peer = thisPeer;
+      // Ereignisse alter, bereits ersetzter Verbindungen dürfen nichts mehr auslösen
+      function current(c) { return peer === thisPeer && (!c || conn === c); }
+      thisPeer.on('open', function () {
+        if (!current()) return;
         recon.reset();
-        conn = peer.connect(peerId(code), { reliable: true, serialization: 'json' });
+        var thisConn = thisPeer.connect(peerId(code), { reliable: true, serialization: 'json' });
+        conn = thisConn;
         var opened = false;
-        var openTimer = setTimeout(function () { if (!opened) fail('Tablet nicht erreichbar (Code prüfen, Tablet-App geöffnet?)'); }, 10000);
-        conn.on('open', function () {
+        var openTimer = setTimeout(function () { if (!opened && current(thisConn)) fail('Tablet nicht erreichbar (Code prüfen, Tablet-App geöffnet?)'); }, 10000);
+        thisConn.on('open', function () {
+          if (!current(thisConn)) return;
           opened = true; clearTimeout(openTimer); retry = 0; lastSeen = Date.now();
           setStatus('connected');
           handlers.onOpen && handlers.onOpen();
         });
-        conn.on('data', function (d) {
+        thisConn.on('data', function (d) {
+          if (!current(thisConn)) return;
           lastSeen = Date.now();
           if (d && d.t === 'ping') { safeSend({ t: 'pong' }); return; }
           if (d && d.t === 'pong') return;
           handlers.onData && handlers.onData(d);
         });
-        conn.on('close', function () { fail('Verbindung getrennt'); });
-        conn.on('error', function (e) { fail(e && e.message); });
+        thisConn.on('close', function () { clearTimeout(openTimer); if (current(thisConn)) fail('Verbindung getrennt'); });
+        thisConn.on('error', function (e) { if (current(thisConn)) fail(e && e.message); });
       });
-      peer.on('disconnected', function () {
-        if (closed) return;
+      thisPeer.on('disconnected', function () {
+        if (closed || !current()) return;
         // Datenkanal läuft weiter; Server-Verbindung leise erneuern
         if (isOpen()) recon.schedule(); else fail('Vermittlungsserver getrennt');
       });
-      peer.on('error', function (err) {
+      thisPeer.on('error', function (err) {
+        if (!current()) return;
         var type = err && err.type;
         if (type === 'peer-unavailable') { fail('Kein Tablet mit diesem Code online'); return; }
         if (SOFT_ERRORS[type]) { if (isOpen()) { recon.schedule(); return; } fail('Netzwerk: ' + type); return; }

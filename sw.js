@@ -1,5 +1,5 @@
 /* Service Worker: hält die App offline verfügbar (Netz zuerst, sonst Cache). */
-var CACHE = 'sehtest-v4';
+var CACHE = 'sehtest-v5';
 var FILES = [
   './', './index.html', './remote.html', './app.css',
   './optotypes.js', './link.js', './controls.js', './display.js', './remote.js',
