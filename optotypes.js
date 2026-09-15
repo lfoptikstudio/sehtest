@@ -70,10 +70,16 @@
   }
 
   /** SVG-Markup für ein Sehzeichen mit Kantenlänge sizePx (CSS-Pixel). */
+  // Innenrand (in Rastereinheiten), damit Rundungen am Zellrand nicht vom Pixelraster angeschnitten werden.
+  // Das Zeichen selbst bleibt exakt sizePx groß; der Rand liegt per negativem Außenabstand außerhalb des Layoutplatzes.
+  var PAD = 0.2;
   function svg(sym, sizePx, extraClass) {
-    var sz = (Math.round(sizePx * 1000) / 1000);
-    return '<svg class="opto ' + (extraClass || '') + '" viewBox="0 0 5 5" width="' + sz + '" height="' + sz +
-      '" style="width:' + sz + 'px;height:' + sz + 'px;overflow:hidden;display:block" shape-rendering="geometricPrecision" aria-label="' + describe(sym) + '">' +
+    var unit = sizePx / 5;
+    var box = 5 + 2 * PAD;
+    var sz = Math.round(unit * box * 1000) / 1000;
+    var m = Math.round(unit * PAD * 1000) / 1000;
+    return '<svg class="opto ' + (extraClass || '') + '" viewBox="' + (-PAD) + ' ' + (-PAD) + ' ' + box + ' ' + box + '" width="' + sz + '" height="' + sz +
+      '" style="width:' + sz + 'px;height:' + sz + 'px;margin:-' + m + 'px;overflow:hidden;display:block" shape-rendering="geometricPrecision" aria-label="' + describe(sym) + '">' +
       shapeFor(sym) + '</svg>';
   }
 
