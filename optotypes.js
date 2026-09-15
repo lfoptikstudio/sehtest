@@ -23,6 +23,7 @@
 
   // Attribut-Sets
   var S = 'fill="none" stroke="#000" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"';
+  var SR = 'fill="none" stroke="#000" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"';
   var F = 'fill="#000" stroke="none"';
   var FE = 'fill="#000" stroke="none" fill-rule="evenodd"';
   var W = 'fill="#fff" stroke="none"';
@@ -37,20 +38,21 @@
        '<path d="M0.5,2.5 L5.6,-0.33 M1.85,1.75 L5.6,5.7" ' + S + '/>',
     N: '<path d="M0,0 H1 V5 H0 Z M4,0 H5 V5 H4 Z M0,0 H1.28 L5,5 H3.72 Z" ' + F + '/>',
     O: '<circle cx="2.5" cy="2.5" r="2" ' + S + '/>',
-    R: '<path d="M0,0 H3.5 A1.5,1.5 0 0 1 3.5,3 H0 Z M1,1 V2 H3.5 A0.5,0.5 0 0 0 3.5,1 Z" ' + FE + '/>' +
+    R: '<path d="M0,0 H1 V5 H0 Z" ' + F + '/>' +
+       '<path d="M0,0 H3.5 A1.5,1.5 0 0 1 3.5,3 H0 Z M1,1 V2 H3.5 A0.5,0.5 0 0 0 3.5,1 Z" ' + FE + '/>' +
        '<path d="M2.7,2.9 H3.85 L5,5 H3.85 Z" ' + F + '/>',
     S: '<path d="M4.23,1 A2,1 0 1 0 2.5,2.5 A2,1 0 1 1 0.77,4" ' + S + '/>',
     V: '<path d="M0.35,-0.4 L2.5,5.3 M4.65,-0.4 L2.5,5.3" ' + S + '/>',
     Z: '<path d="M0,0 H5 V1 H0 Z M0,4 H5 V5 H0 Z M3.586,0 H5 L1.414,5 H0 Z" ' + F + '/>',
-    // --- Zahlen ---
-    '2': '<path d="M0.5,1.5 A2,1 0 1 1 3.91,2.21 L0.5,4.5 M0,4.5 H5" ' + S + '/>',
-    '3': '<path d="M0.62,1.16 A2,1 0 1 1 2.5,2.5 A2,1 0 1 1 0.62,3.84" ' + S + '/>',
-    '4': '<path d="M3.5,0 V5 M3.5,0 L0.5,3.5 H5" ' + S + '/>',
-    '5': '<path d="M5,0.5 H0.5 V2.5 H2.4 A2.1,1 0 1 1 0.58,4" ' + S + '/>',
-    '6': '<path d="M4.3,0.5 C2.4,0.5 0.5,1.6 0.5,3.5 A2,1 0 0 0 4.5,3.5 A2,1 0 0 0 0.5,3.5" ' + S + '/>',
-    '7': '<path d="M0,0.5 H4.5 L1.7,5" ' + S + '/>',
-    '8': '<ellipse cx="2.5" cy="1.5" rx="1.7" ry="1" ' + S + '/><ellipse cx="2.5" cy="3.5" rx="2" ry="1" ' + S + '/>',
-    '9': '<path d="M0.7,4.5 C2.6,4.5 4.5,3.4 4.5,1.5 A2,1 0 0 0 0.5,1.5 A2,1 0 0 0 4.5,1.5" ' + S + '/>'
+    // --- Zahlen (Höhe 5, Breite 4, mittig in der 5er-Zelle; Strichstärke 1, runde Ecken) ---
+    '2': '<path d="M1,2 A1.5,1.5 0 1 1 3.8,2.75 L1,4.5 M0.5,4.5 H4.5" ' + SR + '/>',
+    '3': '<path d="M1,1.5 A1.5,1 0 1 1 2.5,2.5 A1.5,1 0 1 1 1,3.5" ' + SR + '/>',
+    '4': '<path d="M3.25,0 V5 M3.25,0.1 L0.75,3.5 H4.5" ' + SR + '/>',
+    '5': '<path d="M4.25,0.5 H1 V2.4 H2.5 A1.5,1.05 0 1 1 1.2,3.98" ' + SR + '/>',
+    '6': '<path d="M3.9,0.5 C2.2,0.5 1,1.9 1,3.3 A1.5,1.2 0 0 0 4,3.3 A1.5,1.2 0 0 0 1,3.3" ' + SR + '/>',
+    '7': '<path d="M0.5,0.5 H4 L1.8,5" ' + SR + '/>',
+    '8': '<ellipse cx="2.5" cy="1.5" rx="1.3" ry="1" ' + S + '/><ellipse cx="2.5" cy="3.5" rx="1.5" ry="1" ' + S + '/>',
+    '9': '<path d="M1.1,4.5 C2.8,4.5 4,3.1 4,1.7 A1.5,1.2 0 0 0 1,1.7 A1.5,1.2 0 0 0 4,1.7" ' + SR + '/>'
   };
 
   function shapeFor(sym) {

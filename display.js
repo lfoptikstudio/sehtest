@@ -26,7 +26,9 @@
     'Über den Hügeln ziehen langsam Wolken vorbei, während unten im Dorf die Glocken läuten.'
   ];
   var NEAR_STEPS = O.STEPS.filter(function (v) { return v >= 0.1 && v <= 1.25; });
-  var CAP_HEIGHT_RATIO = 0.716; // Arial / Helvetica: Versalhöhe relativ zur Schriftgröße
+  // Arial / Helvetica: Versalhöhe 0,716 em, Kleinbuchstabenhöhe (x-Höhe) 0,519 em
+  var CAP_HEIGHT_RATIO = 0.716;
+  var X_HEIGHT_RATIO = 0.519;
 
   function load() {
     try { return JSON.parse(localStorage.getItem(LS) || '{}'); } catch (e) { return {}; }
@@ -46,7 +48,7 @@
     showInfo: saved.showInfo !== undefined ? saved.showInfo : true,
     row: [], rowCount: 0, wrong: [],
     avail: [], hMm: 0, strokeDevPx: 0,
-    near: Object.assign({ distanceCm: 40, view: 'chart', visus: 0.4 }, saved.near || {}),
+    near: Object.assign({ distanceCm: 40, view: 'chart', visus: 0.4, ref: 'x' }, saved.near || {}),
     results: saved.results || [],
     pairCode: saved.pairCode || global.Link.randomCode(6),
     calib: Object.assign({ pxPerMm: PRESETS.ipad, preset: 'ipad' }, saved.calib || {}),
@@ -207,20 +209,30 @@
   function renderNear() {
     var pxPerMm = state.calib.pxPerMm;
     var dM = state.near.distanceCm / 100;
-    function fontPx(v) { return O.sizeMm(dM, v) / CAP_HEIGHT_RATIO * pxPerMm; }
+    var useX = state.near.ref !== 'cap';
+    var ratio = useX ? X_HEIGHT_RATIO : CAP_HEIGHT_RATIO;
+    var refName = useX ? 'x-Höhe' : 'Versalhöhe';
+    // Bezugsgröße (5 Winkelminuten / Visus) in mm; M-Wert = Entfernung in m, bei der sie 5' entspricht (Sloan)
+    function refMm(v) { return O.sizeMm(dM, v); }
+    function mUnit(v) { return dM / v; }
+    function fontPx(v) { return refMm(v) / ratio * pxPerMm; }
+    function tag(v) {
+      return 'Visus ' + O.fmtVisus(v) + ' · ' + O.fmtNum(mUnit(v), 2) + ' M<br>' + refName + ' ' + O.fmtNum(refMm(v), 2) + ' mm';
+    }
     var html = '';
     if (state.near.view === 'single') {
       var v = state.near.visus;
       var txt = NEAR_TEXTS[NEAR_STEPS.indexOf(v) % NEAR_TEXTS.length] + ' ' + NEAR_TEXTS[(NEAR_STEPS.indexOf(v) + 5) % NEAR_TEXTS.length];
       html = '<div class="single"><p style="font-size:' + fontPx(v).toFixed(2) + 'px">' + txt + '</p>' +
-        '<div class="tag">Visus ' + O.fmtVisus(v) + ' bei ' + state.near.distanceCm + ' cm · Versalhöhe ' + O.fmtNum(O.sizeMm(dM, v), 2) + ' mm</div></div>';
+        '<div class="tag">' + tag(v) + ' · ' + state.near.distanceCm + ' cm</div></div>';
     } else {
       // Lesetafel: groß nach klein
       NEAR_STEPS.forEach(function (v, i) {
-        html += '<div class="para"><div class="tag">Visus ' + O.fmtVisus(v) + '<br>' + O.fmtNum(O.sizeMm(dM, v), 2) + ' mm</div>' +
+        html += '<div class="para"><div class="tag">' + tag(v) + '</div>' +
           '<p style="font-size:' + fontPx(v).toFixed(2) + 'px">' + NEAR_TEXTS[i % NEAR_TEXTS.length] + '</p></div>';
       });
-      html += '<div class="tag" style="color:#999;font-size:11px;margin-top:20px">Nahsehprobe für ' + state.near.distanceCm + ' cm. Visusangabe bezogen auf die Versalhöhe (5 Winkelminuten). Schriftgrößen skaliert per Bildschirmkalibrierung.</div>';
+      html += '<div class="tag" style="color:#999;font-size:11px;margin-top:20px">Nahsehprobe für ' + state.near.distanceCm + ' cm. Visus bezogen auf die ' + refName +
+        ' = 5 Winkelminuten' + (useX ? ' (Sloan-M-System, wie MNREAD / Radner)' : '') + '. Schriftgrößen skaliert per Bildschirmkalibrierung.</div>';
     }
     els.near.innerHTML = html;
   }

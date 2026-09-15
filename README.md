@@ -7,7 +7,7 @@ Home-Bildschirm gelegt und per Handy gesteuert. Alles schwarz auf weiß.
 
 | Bereich | Details |
 |---|---|
-| Sehzeichen | Zahlen (2 3 5 6 8 9, optional 4 7), Sloan-Buchstaben (C D H K N O R S V Z), Landolt-Ringe, E-Haken |
+| Sehzeichen | Zahlen (2 3 5 6 8 9, optional 4 7; keine Norm, eigener 5×5-Entwurf im Stil üblicher Zahlentafeln, 4 Einheiten breit), Sloan-Buchstaben (C D H K N O R S V Z), Landolt-Ringe, E-Haken |
 | Geometrie | 5×5-Raster, Strichstärke 1/5 der Höhe, Höhe = 5 Winkelminuten / Visus (DIN EN ISO 8596) |
 | Visusstufen | logarithmische Reihe 0,05 … 2,0 (0,1-log-Schritte: 0,1 · 0,125 · 0,16 · 0,2 · 0,25 · 0,32 · 0,4 · 0,5 · 0,63 · 0,8 · 1,0 · 1,25 · 1,6 · 2,0); „0,64“ auf alten Tafeln entspricht 0,63 |
 | Reihe | immer genau eine Reihe, Abstand zwischen den Zeichen = eine Zeichenbreite (ISO 8596 / ETDRS) |
@@ -96,7 +96,7 @@ Kleinste Stufe, bei der eine Reihe mit 5 Zeichen noch passt:
 Für tiefe Visusstufen also 2–3 m wählen oder „Auto“ nutzen. Bei sehr kleinen Zeichen (Strichstärke unter 2 Gerätepixeln,
 z. B. Visus 2,0 in 1 m) warnt die App.
 
-Nahsehprobe: Visusangabe bezogen auf die Versalhöhe (5 Winkelminuten). Ab Visus 1,0 bei 30 cm ist die Schrift nur noch
+Nahsehprobe: Visus standardmäßig bezogen auf die **Kleinbuchstabenhöhe (x-Höhe) = 5 Winkelminuten**, wie im Sloan-M-System (MNREAD, Radner); zusätzlich wird der M-Wert angezeigt (0,4 M bei 40 cm = Visus 1,0). Umschaltbar auf Versalhöhe. Ab Visus 1,0 bei 30 cm ist die Schrift nur noch
 gut 1 mm hoch (Grenze der Displayauflösung); 40 cm sind für den Nahtest günstiger.
 
 ## Normbezug

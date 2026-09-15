@@ -106,6 +106,7 @@
       var nr = s.near || {};
       html += '<div class="inline"><span class="lbl2">Nahdistanz</span>' + seg(NEAR_D.map(function (d) { return [d, d + ' cm']; }), nr.distanceCm, 'setNearDist', 'cm') + '</div>';
       html += '<div class="inline"><span class="lbl2">Darstellung</span>' + seg([['chart', 'Lesetafel'], ['single', 'Ein Absatz']], nr.view, 'setNearView', 'view') + '</div>';
+      html += '<div class="inline"><span class="lbl2">Visus-Bezug</span>' + seg([['x', 'x-Höhe (M-System)'], ['cap', 'Versalhöhe']], nr.ref || 'x', 'setNearRef', 'ref') + '</div>';
       if (nr.view === 'single') {
         html += '<div class="chips">' + O.STEPS.filter(function (v) { return v >= 0.1 && v <= 1.25; }).map(function (v) {
           return '<button type="button" class="chip' + (v === nr.visus ? ' on' : '') + '" data-action="setNearVisus" data-v="' + v + '">' + O.fmtVisus(v) + '</button>';
@@ -160,6 +161,7 @@
         case 'setNearDist': dispatch({ name: 'setNear', patch: { distanceCm: +d.cm } }); break;
         case 'setNearView': dispatch({ name: 'setNear', patch: { view: d.view } }); break;
         case 'setNearVisus': dispatch({ name: 'setNear', patch: { visus: +d.v } }); break;
+        case 'setNearRef': dispatch({ name: 'setNear', patch: { ref: d.ref } }); break;
         case 'toggleWrong': dispatch({ name: 'toggleWrong', index: +d.index }); break;
         case 'saveResult': dispatch({ name: 'saveResult', eye: d.eye }); break;
         case 'deleteResult': dispatch({ name: 'deleteResult', index: +d.index }); break;

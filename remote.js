@@ -64,7 +64,7 @@
 
     if (code) connect(code);
     document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible') { requestWakeLock(); if (link) link.reconnect(); }
+      if (document.visibilityState === 'visible') { requestWakeLock(); if (link) link.check(); }
     });
     // Erstes Antippen: Bildschirm wach halten
     document.addEventListener('touchend', requestWakeLock, { once: true });
