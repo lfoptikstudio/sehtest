@@ -35,7 +35,14 @@ manifest.webmanifest, icon.svg, icon-180.png, icon-512.png
 vendor/         peerjs.min.js (MIT), qrcode.min.js (MIT)
 ```
 
-## Ins Netz stellen (einmalig)
+## Adresse
+
+- Tablet: **https://lfoptikstudio.github.io/sehtest/**
+- Handy: **https://lfoptikstudio.github.io/sehtest/remote.html**
+
+Repository: https://github.com/lfoptikstudio/sehtest (Änderungen an den Dateien hier committen und pushen, GitHub Pages aktualisiert sich nach ca. einer Minute).
+
+## Ins Netz stellen (nur bei einem anderen Konto nötig)
 
 Die App braucht eine **https-Adresse** (für Vollbild-App, Bildschirm-Wachhalten und die Handy-Verbindung).
 Einfachster Weg: GitHub Pages, kostenlos.
