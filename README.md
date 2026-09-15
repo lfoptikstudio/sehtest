@@ -24,6 +24,7 @@ Home-Bildschirm gelegt und per Handy gesteuert. Alles schwarz auf weiß.
 ```
 index.html      Tablet-Anzeige (Start: Einrichtung → Sehtest)
 remote.html     Handy-Fernbedienung
+zeichen.html    Übersicht aller Sehzeichen zum Kontrollieren der Formen
 optotypes.js    Sehzeichen-Geometrie, Visus-Mathematik
 display.js      Zustand, Größenberechnung, Amsler, Nahtest
 controls.js     gemeinsames Bedienfeld (Handy und Tablet)
@@ -41,6 +42,8 @@ vendor/         peerjs.min.js (MIT), qrcode.min.js (MIT)
 - Handy: **https://lfoptikstudio.github.io/sehtest/remote.html**
 
 Repository: https://github.com/lfoptikstudio/sehtest (Änderungen an den Dateien hier committen und pushen, GitHub Pages aktualisiert sich nach ca. einer Minute).
+
+Bei jeder neuen Version die Versionsnummer `?v=N` in den Script- und Style-Verweisen von `index.html`, `remote.html` und `zeichen.html` sowie `CACHE` in `sw.js` hochzählen, sonst halten iPad und Handy alte Dateien im Cache fest.
 
 ## Ins Netz stellen (nur bei einem anderen Konto nötig)
 

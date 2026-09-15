@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Sehtest – Zeichenübersicht</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+  body { margin: 0; padding: 20px; font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; background: #fff; color: #222; }
+  h1 { font-size: 20px; margin: 0 0 6px; }
+  p { color: #666; font-size: 14px; margin: 0 0 18px; max-width: 70em; }
+  h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin: 22px 0 8px; }
+  .grid { display: flex; flex-wrap: wrap; gap: 22px; }
+  .cell { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .cell .name { font-size: 13px; color: #666; }
+  .box { border: 1px dashed #ddd; padding: 0; line-height: 0; }
+  .ctrl { margin: 0 0 14px; font-size: 14px; }
+  input[type=range] { width: 260px; vertical-align: middle; }
+</style>
+</head>
+<body>
+  <h1>Zeichenübersicht</h1>
+  <p>Alle Sehzeichen im 5×5-Raster (gestrichelt = Zellrahmen), Strichstärke 1/5 der Höhe. Hier lassen sich die Formen in Ruhe
+     kontrollieren. Die Buchstaben folgen dem Sloan-Satz (ETDRS); sie sind absichtlich geometrisch und wirken deshalb anders als
+     Text-Schriften.</p>
+  <div class="ctrl">Größe <input id="size" type="range" min="60" max="300" value="140"> <span id="sizeVal">140</span> px</div>
+  <div id="out"></div>
+  <script src="optotypes.js?v=3"></script>
+  <script>
+    (function () {
+      var groups = [
+        ['Buchstaben (Sloan)', Opto.LETTERS],
+        ['Zahlen', Opto.DIGITS.concat(Opto.DIGITS_EXT)],
+        ['Landolt-Ringe', [0, 45, 90, 135, 180, 225, 270, 315].map(function (a) { return 'L' + a; })],
+        ['E-Haken', [0, 90, 180, 270].map(function (a) { return 'E' + a; })]
+      ];
+      var out = document.getElementById('out'), size = document.getElementById('size'), sizeVal = document.getElementById('sizeVal');
+      function render() {
+        var s = +size.value; sizeVal.textContent = s;
+        out.innerHTML = groups.map(function (g) {
+          return '<h2>' + g[0] + '</h2><div class="grid">' + g[1].map(function (sym) {
+            return '<div class="cell"><div class="box">' + Opto.svg(sym, s) + '</div><div class="name">' + Opto.describe(sym) + '</div></div>';
+          }).join('') + '</div>';
+        }).join('');
+      }
+      size.addEventListener('input', render);
+      render();
+    })();
+  </script>
+</body>
+</html>
