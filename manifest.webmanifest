@@ -1,0 +1,17 @@
+{
+  "name": "Sehtest",
+  "short_name": "Sehtest",
+  "description": "Sehtest für Hausbesuche: Sehzeichen nach ISO 8596, Amsler-Gitter, Nahsehprobe – Steuerung per Handy.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "lang": "de",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

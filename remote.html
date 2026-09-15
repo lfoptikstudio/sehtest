@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Sehtest – Fernbedienung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sehtest FB">
+<meta name="theme-color" content="#f2f3f5">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="app.css">
+</head>
+<body class="remote">
+  <div class="topbar">
+    <h1>Sehtest – Fernbedienung</h1>
+    <div id="conn" class="conn"><span class="dot"></span><span id="connText">nicht verbunden</span></div>
+  </div>
+
+  <section id="connectCard" class="card connect-card">
+    <h3>Code vom Tablet</h3>
+    <input id="codeInput" type="text" maxlength="8" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="ABC123">
+    <div class="actions" style="justify-content:center">
+      <button id="connectBtn" type="button" class="btn primary">Verbinden</button>
+    </div>
+    <div id="connectMsg" class="msg"></div>
+  </section>
+
+  <div id="controls" class="controls" hidden></div>
+
+  <script src="vendor/peerjs.min.js"></script>
+  <script src="optotypes.js"></script>
+  <script src="link.js"></script>
+  <script src="controls.js"></script>
+  <script src="remote.js"></script>
+</body>
+</html>

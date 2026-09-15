@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Sehtest – Tablet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sehtest">
+<meta name="theme-color" content="#ffffff">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div id="stage">
+    <div id="row"></div>
+    <div id="info"></div>
+    <div id="hint" hidden></div>
+    <div id="amsler" hidden></div>
+    <div id="near" hidden></div>
+  </div>
+  <div id="portraitHint" hidden>Bitte das Tablet ins Querformat drehen.</div>
+
+  <div id="status"><span class="dot"></span></div>
+  <button id="gear" type="button" title="Bedienfeld (S)" aria-label="Bedienfeld">⚙</button>
+
+  <!-- Bedienfeld am Tablet (gleiche Steuerung wie am Handy) -->
+  <div id="panel" class="sheet" hidden>
+    <div class="inner">
+      <div class="bar">
+        <h2>Steuerung</h2>
+        <button type="button" class="btn mini" data-panel="fullscreen">Vollbild</button>
+        <button type="button" class="btn mini" data-panel="openSetup">Einstellungen / Code</button>
+        <button type="button" class="btn mini" data-panel="closePanel">Schließen ✕</button>
+      </div>
+      <div id="panelBody" class="controls"></div>
+    </div>
+  </div>
+
+  <!-- Startansicht -->
+  <div id="setup" class="sheet setup">
+    <div class="inner">
+      <div class="bar"><h2>Sehtest – Einrichtung</h2></div>
+      <div id="setupBody"></div>
+    </div>
+  </div>
+
+  <script src="vendor/peerjs.min.js"></script>
+  <script src="vendor/qrcode.min.js"></script>
+  <script src="optotypes.js"></script>
+  <script src="link.js"></script>
+  <script src="controls.js"></script>
+  <script src="display.js"></script>
+</body>
+</html>
